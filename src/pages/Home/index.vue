@@ -1,5 +1,7 @@
 <template>
-  <div>Home</div>
+  <div>
+    路由组件部分
+  </div>
 </template>
 
 <script>
