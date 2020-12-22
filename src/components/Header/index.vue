@@ -67,7 +67,7 @@ export default {
           keyword2:this.keyword.toUpperCase()
         }
       }
-      this.$router.push(location)
+      this.$router.push(location).catch(()=>{console.log('捕获错误')})
 
 
       // this.$router.push({
