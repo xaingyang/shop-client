@@ -11,7 +11,7 @@ import Header from './components/Header'
 import Footer from './components/Footer'
 // import Home from '@/pages/Home'
 
-import {getCategoryList} from './api'
+// import {getCategoryList} from './api'
 
 export default {
   name: 'App',
@@ -21,9 +21,11 @@ export default {
     
   },
   mounted(){
-    getCategoryList().then(result=>{
-      console.log('result',result)
-    })
+    // getCategoryList().then(result=>{
+    //   console.log('result',result)
+    // })
+
+    this.$store.dispatch('getCategoryList')
   }
 }
 </script>
