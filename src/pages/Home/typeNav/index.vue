@@ -1,11 +1,11 @@
 <template>
   <!-- 商品分类导航 -->
         <div class="type-nav">
-            <div class="container" @mouseleave="currentIndex=-1">
+            <div class="container" @mouseleave="hideFirst" @mouseenter="showFirst">
                 <h2 class="all">全部商品分类</h2>            
-                <div class="sort">
-                    <div class="all-sort-list2" @click="toSearch">
-                        <div class="item" v-for="(c1, index) in categoryList" :key="c1.categoryId" :class="{active:index===currentIndex}" @mouseenter="showSubList(index)">
+                <div class="sort" v-show="isShowFirst">
+                    <div class="all-sort-list2" @click="toSearch" >
+                        <div class="item" v-for="(c1, index) in categoryList" :key="c1.categoryId" :class="{active:index===currentIndex}" @mouseenter="showSubList(index)" >
                             <h3>
                                 <!-- <a href="javascript:" :data-categoryName="c1.categoryName" :data-category1Id="c1.categoryId">{{c1.categoryName}}</a> -->
                               <!-- 第一种:<router-link :to="`/search?categoryName=${c1.categoryName}&category1Id=${c1.categoryId}`">{{c1.categoryName}}</router-link> -->
@@ -38,7 +38,7 @@
                     <a href="###">团购</a>
                     <a href="###">有趣</a>
                     <a href="###">秒杀</a>
-                </nav>
+                </nav>              
             </div>
         </div>
 </template>
@@ -49,8 +49,11 @@ import throttle from "lodash/throttle"
 export default {
   name: 'typeNav',
   data() {
+      const path=this.$route.path
       return {
-          currentIndex:-1,
+          currentIndex:-2,
+        //   isShowFirst:false,
+        isShowFirst:path==='/'
       };
   },
   computed:{
@@ -69,6 +72,20 @@ export default {
       //   console.log(this.categoryList)
   },
   methods: {
+       hideFirst(){
+          this.currentIndex=-2
+          // 如果当前不是首页, 隐藏一级列表
+          if(this.$route.path!=='/'){
+              this.isShowFirst=false
+          }
+       },
+       showFirst(){
+          // 标识当前已经进入包含分类的div
+          this.currentIndex=-1
+          // 保证显示一级列表
+          this.isShowFirst=true
+       },
+
     // 显示指定下标的子分类列表
     //   showSubList(index){
     //      this.currentIndex=index
@@ -76,7 +93,10 @@ export default {
   
     // 显示指定下标的子分类列表 + 节流
     showSubList:throttle(function(index){
-        this.currentIndex=index;
+        // this.currentIndex=index;
+        if(this.currentIndex!==-2){
+            this.currentIndex=index;
+        }
     },500),
 
       /* 点击跳转去搜索界面*/

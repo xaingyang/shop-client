@@ -58,6 +58,7 @@ export default {
     search(){
       const location={
         name:'search',
+        // query:this.$route.query
       }
       if(this.keyword){
         location.params={
