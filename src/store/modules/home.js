@@ -2,7 +2,7 @@ import {reqCategoryList} from '@/api'
 
 
 const state={
-    categroyList:[]
+    categoryList:[]
 }
 const mutations={
     RECEIVE_CATEGORY_LIST(state,categoryList){
