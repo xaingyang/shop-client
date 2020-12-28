@@ -26,6 +26,7 @@ export default {
     // })
 
     this.$store.dispatch('getCategoryList')
+    this.$store.dispatch('getBannerList')
   }
 }
 </script>

@@ -2,7 +2,7 @@ import axios from 'axios'
 import Nprogress from 'nprogress'
 import 'nprogress/nprogress.css'
 
-// 配置通用的基础路径和请求超时,service是一个能发任意ajax请求的函数, 可以作为对象使用
+// 配置通用的基础路径和请求超时,service是一个能发任意ajax请求的函数, 
 const service=axios.create({
     baseURL:'http://39.99.186.36',
     timeout:2000,

@@ -4,10 +4,10 @@
             <div class="sortList clearfix">
                 <div class="center">
                     <!--banner轮播-->
-                    <div class="swiper-container" id="mySwiper">
+                    <div class="swiper-container" ref="swiper">
                         <div class="swiper-wrapper">
-                            <div class="swiper-slide">
-                                <img src="../../../assets/home/banner1.jpg" />
+                            <div class="swiper-slide" v-for="banner in bannerList" :key="banner.id">
+                                <img :src="banner.imageUrl" style="width: 100%; height:464px;"/>
                             </div>
                             <!-- <div class="swiper-slide">
                                 <img src="../../../assets/home/banner2.jpg" />
@@ -111,8 +111,66 @@
 </template>
 
 <script>
+import Swiper from 'swiper'
+import { mapState } from 'vuex'
+
 export default {
   name: 'List',
+
+  mounted () {
+       this.$store.dispatch('getBannerList').then()
+       console.log('aaa',this.$store.dispatch('getBannerList'))
+
+    // swiper对象必须在列表显示之后创建才有效果
+    // new Swiper ('.swiper-container', { // 问题: 会影响到当前页面其它的轮播
+    // new Swiper (this.$refs.swiper, {
+    //     // direction: 'horizontal', // 水平切换选项
+    //     loop: true, // 循环模式选项
+    //     autoplay: { // 自动轮播
+    //       delay: 4000,
+    //       disableOnInteraction: false, // 用户操作后是否停止自动轮播
+    //     }, 
+    //     // 如果需要分页器
+    //     pagination: {
+    //       el: '.swiper-pagination',
+    //     },
+    //     // 如果需要前进后退按钮
+    //     navigation: {
+    //       nextEl: '.swiper-button-next',
+    //       prevEl: '.swiper-button-prev',
+    //     },
+    //   })        
+  },
+  computed: {
+      ...mapState({
+          bannerList:state => state.home.bannerList
+          
+      })
+  },
+  watch:{
+      bannerList(){
+          console.log(this.bannerList)
+          this.$nextTick(()=>{
+              // 当轮播列表界面显示之后才执行回调
+              new Swiper(this.$refs.swiper,{
+                  // swiper对象必须在列表界面显示之后创建才有效
+                  loop:true,
+                  autoplay:{
+                       disableOnInteraction: false, // 用户操作后, 恢复自动轮播
+                  },
+                  // 如果需要分页器
+                  pagination:{
+                      el:'.swiper-pagination'
+                  },
+                  // 如果需要前进后退按钮
+                  navigation: {
+                    nextEl: '.swiper-button-next',
+                    prevEl: '.swiper-button-prev',
+                  },
+              })
+          })
+      }
+  }
 }
 </script>
 

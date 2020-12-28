@@ -9,10 +9,10 @@
                             <h3>今日推荐</h3>
                         </div>
                     </li>
-                    <li class="banner">
-                        <img src="../../../assets/home/today01.png" />
+                    <li class="banner" v-for="item in Rececommends" :key="item.id">
+                        <img :src="item.imageUrl" />
                     </li>
-                    <li class="banner">
+                    <!-- <li class="banner">
                         <img src="../../../assets/home/today02.png" />
                     </li>
                     <li class="banner">
@@ -20,15 +20,22 @@
                     </li>
                     <li class="banner">
                         <img src="../../../assets/home/today04.png" />
-                    </li>
+                    </li> -->
                 </ul>
             </div>
         </div>
 </template>
 
 <script>
+import {mapState} from 'vuex'
+
 export default {
   name: '',
+  computed:{
+      ...mapState({
+          Rececommends:state => state.home.Rececommends
+      })
+  }
 }
 </script>
 
