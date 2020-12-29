@@ -9,6 +9,7 @@
 <script>
 import Header from './components/Header'
 import Footer from './components/Footer'
+
 // import Home from '@/pages/Home'
 
 // import {getCategoryList} from './api'
@@ -18,7 +19,6 @@ export default {
   components: {
     Header,
     Footer,
-    
   },
   mounted(){
     // getCategoryList().then(result=>{

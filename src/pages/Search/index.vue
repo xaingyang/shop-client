@@ -82,36 +82,16 @@
                 </div>
               </li>
             </ul>
+            {{productList.total}}
+            {{total}}
           </div>
-          <div class="fr page">
-            <div class="sui-pagination clearfix">
-              <ul>
-                <li class="prev disabled">
-                  <a href="#">«上一页</a>
-                </li>
-                <li class="active">
-                  <a href="#">1</a>
-                </li>
-                <li>
-                  <a href="#">2</a>
-                </li>
-                <li>
-                  <a href="#">3</a>
-                </li>
-                <li>
-                  <a href="#">4</a>
-                </li>
-                <li>
-                  <a href="#">5</a>
-                </li>
-                <li class="dotted"><span>...</span></li>
-                <li class="next">
-                  <a href="#">下一页»</a>
-                </li>
-              </ul>
-              <div><span>共10页&nbsp;</span></div>
-            </div>
-          </div>
+         <Pagination
+         :currentPage="options.pageNo"
+         :total="productList.total"
+         :pageSize="options.pageSize"
+         :showPageNo="5"
+         @currentChange="handleCurrentChange"
+         />
         </div>
       </div>
     </div>
@@ -155,7 +135,20 @@
         immediate: true, // 初始化立即执行第一次
       }
     },
-    methods: {     
+    methods: {  
+      // 异步获取指定页码的商品列表显示
+       getProductList(page=1){
+            // 更新pageNo
+            this.options.pageNo=page
+            // 请求获取数据
+            this.$store.dispatch('getProduction',this.options)
+       },
+
+      // 处理分页页码改变的监听回调  
+      handleCurrentChange(page){
+         this.getProductList(page)
+      },
+
       // 设置新的排序搜索
       setOrder(orderFlag){
           // 得到当前的排序项和排序方式
@@ -189,14 +182,16 @@
 
       //  删除品牌条件
       removeTrademark(){
-        this.options.trademark=''
+        // this.options.trademark=''
+        this.$delete(this.options,'trademark')
         this.getSHopList()
       },
 
       // 设置品牌条件
       setTrademark(trademark){
         if(trademark===this.options.trademark) return 
-        this.options.trademark=trademark
+        // this.options.trademark=trademark
+        this.$set(this.options,'trademark',trademark)
         // 重新请求获取数据列表
         this.getSHopList()
       },
@@ -245,7 +240,11 @@
       },
     },
     computed:{
-      ...mapGetters(['goodsList']),
+      // ...mapGetters(['goodsList'],['xxx']),
+      ...mapGetters(['goodsList','total']),
+      ...mapState({
+        productList:state => state.search.productList
+      }),
 
       //  得到包含当前分类项标识(orderFlag)和排序方式(orderType)的数组
       orderArr(){
